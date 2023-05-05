@@ -138,7 +138,7 @@ async function scriptFromHttp(remote: string) {
   await importScriptFromFilePath(script, filepath)
 }
 
-async function writeAndImport(
+async function importScriptFromFilePath(
   script: string | Buffer,
   filepath: string,
   origin = filepath
@@ -159,14 +159,14 @@ async function importPath(filepath: string, origin = filepath) {
       ? `${basename(filepath)}-${randomId()}.mjs`
       : `${basename(filepath)}.mjs`
 
-    return writeAndImport(
+    return importScriptFromFilePath(
       await fs.readFile(filepath),
       join(dirname(filepath), tmpFilename),
       origin
     )
   }
   if (ext === '.md') {
-    return writeAndImport(
+    return importScriptFromFilePath(
       transformMarkdown(await fs.readFile(filepath)),
       join(dirname(filepath), basename(filepath) + '.mjs'),
       origin
